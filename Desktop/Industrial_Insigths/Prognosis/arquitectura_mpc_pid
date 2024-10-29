@@ -1,0 +1,30 @@
+// Arquitectura del Sistema MPC-PID
+digraph {
+	MPC [label="Controlador MPC
+(Nivel Supervisor)"]
+	PID [label="Controlador PID
+(Nivel de Campo)"]
+	Proceso [label="Proceso Controlado
+(Planta)"]
+	Sensor [label=Sensores]
+	Actuador [label=Actuadores]
+	Modelo [label="Modelo Dinámico
+del Proceso"]
+	Horizon [label="Horizonte de Predicción
+y Control"]
+	Objetivo [label="Función Objetivo
+(Minimización del Error)"]
+	Sensor -> MPC [label="Mediciones del Proceso"]
+	MPC -> Modelo [label="Predicción Basada en
+Modelo Dinámico"]
+	MPC -> Horizon [label="Horizonte de Predicción
+(Np, Nc)"]
+	MPC -> Objetivo [label="Criterio de Optimización"]
+	MPC -> PID [label="Parámetros PID Óptimos
+(Kp, Ki, Kd)"]
+	PID -> Actuador [label="Señales de Control"]
+	Actuador -> Proceso [label="Ajustes en Tiempo Real"]
+	Proceso -> Sensor [label="Datos Operativos"]
+	label="Arquitectura General del Sistema de Control Predictivo MPC-PID"
+	fontsize=20 labelloc=top
+}
