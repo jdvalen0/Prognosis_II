@@ -1,0 +1,17 @@
+.venv/
+env/
+venv_new/
+__pycache__/
+*.pyc
+.env
+*.db
+results/
+tests/unit/__pycache__/
+src/models/__pycache__/
+src/data/__pycache__/
+src/features/__pycache__/
+src/ui/__pycache__/
+Data_Transformada.csv
+filtered_consolidated_data_cleaned.xlsx
+.DS_Store
+.~lock.*

@@ -1,0 +1,35 @@
+services:
+  db:
+    image: postgres:15
+    container_name: prognosis_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: industrial2024
+      POSTGRES_DB: prognosis_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: prognosis_app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: industrial2024
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: prognosis_db
+    volumes:
+      - .:/app
+
+volumes:
+  postgres_data:

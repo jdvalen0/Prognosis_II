@@ -1,0 +1,103 @@
+{
+  "asset_type": "pump",
+  "asset_name": "centrifugal_pump_001",
+  "temporal_granularity": "minutes",
+  "expected_seasonality_periods": [1440, 10080],
+  "min_data_points_for_training": 1000,
+  "variables": [
+    {
+      "name": "flow_rate",
+      "unit": "m3/h",
+      "expected_range": [0, 500],
+      "critical_thresholds": {
+        "warning": 50,
+        "critical": 30
+      },
+      "sampling_frequency": "1min",
+      "data_type": "numeric",
+      "is_mandatory": true,
+      "description": "Caudal de flujo"
+    },
+    {
+      "name": "discharge_pressure",
+      "unit": "bar",
+      "expected_range": [0, 20],
+      "critical_thresholds": {
+        "warning": 18,
+        "critical": 19.5
+      },
+      "sampling_frequency": "1min",
+      "data_type": "numeric",
+      "is_mandatory": true,
+      "description": "Presión de descarga"
+    },
+    {
+      "name": "motor_temperature",
+      "unit": "°C",
+      "expected_range": [20, 100],
+      "critical_thresholds": {
+        "warning": 85,
+        "critical": 95
+      },
+      "sampling_frequency": "1min",
+      "data_type": "numeric",
+      "is_mandatory": true,
+      "description": "Temperatura del motor"
+    },
+    {
+      "name": "vibration_amplitude",
+      "unit": "mm/s",
+      "expected_range": [0, 10],
+      "critical_thresholds": {
+        "warning": 7,
+        "critical": 9
+      },
+      "sampling_frequency": "1min",
+      "data_type": "numeric",
+      "is_mandatory": true,
+      "description": "Amplitud de vibración"
+    }
+  ],
+  "failure_modes": [
+    {
+      "name": "cavitation",
+      "indicators": ["flow_rate", "discharge_pressure", "vibration_amplitude"],
+      "detection_rule": "low_flow_high_vibration",
+      "criticality": "high"
+    },
+    {
+      "name": "bearing_failure",
+      "indicators": ["vibration_amplitude", "motor_temperature"],
+      "detection_rule": "high_vibration_high_temp",
+      "criticality": "critical"
+    },
+    {
+      "name": "seal_leakage",
+      "indicators": ["discharge_pressure", "flow_rate"],
+      "detection_rule": "pressure_drop_flow_decrease",
+      "criticality": "medium"
+    }
+  ],
+  "business_rules": {
+    "maintenance_window_hours": 4,
+    "emergency_response_time_minutes": 30,
+    "max_downtime_acceptable_hours": 1
+  },
+  "alert_configuration": {
+    "warning_threshold": 0.7,
+    "critical_threshold": 0.85,
+    "notification_channels": ["dashboard", "mobile_app"],
+    "escalation_rules": {
+      "critical_escalation_after_minutes": 5,
+      "warning_escalation_after_minutes": 30
+    }
+  },
+  "metadata": {
+    "location": "Plant A, Building 3",
+    "commissioning_date": "2019-06-15",
+    "manufacturer": "Grundfos",
+    "model": "CR 150",
+    "rated_flow_m3h": 450,
+    "rated_head_m": 80
+  }
+}
