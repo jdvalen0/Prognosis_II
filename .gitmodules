@@ -1,0 +1,3 @@
+[submodule "Elico/industrial_insights/Elico/industrial_insights/Industrial_Insigths"]
+	path = Elico/industrial_insights/Elico/industrial_insights/Industrial_Insigths
+	url = https://github.com/Industria40/Industrial_Insigths.git
