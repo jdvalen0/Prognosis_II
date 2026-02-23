@@ -18,7 +18,11 @@ class SystemConfig:
     DB_PORT = os.getenv("DB_PORT", "5432")
     DB_NAME = os.getenv("DB_NAME", "prognosis_db")
     
-    DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    USE_SQLITE = os.getenv("USE_SQLITE", "").strip().lower() in ("1", "true", "yes")
+    if USE_SQLITE:
+        DATABASE_URL = "sqlite:///prognosis_local.db"
+    else:
+        DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
     
     # Umbrales Estadísticos
     STATISTICAL_THRESHOLDS = {

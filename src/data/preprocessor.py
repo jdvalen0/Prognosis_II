@@ -192,18 +192,18 @@ class DataPreprocessor:
         try:
             with self.db.engine.connect() as conn:
                 with conn.begin():
-                    conn.execute(text("""
-                        CREATE TABLE IF NOT EXISTS scaler_parameters (
-                            id SERIAL PRIMARY KEY,
-                            scaler_type VARCHAR NOT NULL DEFAULT 'StandardScaler',
-                            mean_params JSONB NOT NULL,
-                            scale_params JSONB NOT NULL,
-                            columns_list JSONB NOT NULL,
-                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                            is_active BOOLEAN DEFAULT true
-                        );
-                    """))
-                    
+                    if self.db.engine.dialect.name != "sqlite":
+                        conn.execute(text("""
+                            CREATE TABLE IF NOT EXISTS scaler_parameters (
+                                id SERIAL PRIMARY KEY,
+                                scaler_type VARCHAR NOT NULL DEFAULT 'StandardScaler',
+                                mean_params JSONB NOT NULL,
+                                scale_params JSONB NOT NULL,
+                                columns_list JSONB NOT NULL,
+                                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                is_active BOOLEAN DEFAULT true
+                            );
+                        """))
                     # Desactivar versiones anteriores
                     conn.execute(text("""
                         UPDATE scaler_parameters SET is_active = false
@@ -269,17 +269,17 @@ class DataPreprocessor:
             return False
 
     def save_to_db(self, df: pd.DataFrame, table_name: str):
-        """Guarda datos y mapeo en PostgreSQL."""
+        """Guarda datos y mapeo en DB (PostgreSQL o SQLite)."""
         with self.db.engine.connect() as conn:
             with conn.begin():
-                # Tabla de mapeo para trazabilidad (Explainability)
-                conn.execute(text("""
-                    CREATE TABLE IF NOT EXISTS variable_mapping (
-                        normalized_name VARCHAR PRIMARY KEY,
-                        original_name VARCHAR NOT NULL,
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                    );
-                """))
+                if self.db.engine.dialect.name != "sqlite":
+                    conn.execute(text("""
+                        CREATE TABLE IF NOT EXISTS variable_mapping (
+                            normalized_name VARCHAR PRIMARY KEY,
+                            original_name VARCHAR NOT NULL,
+                            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                        );
+                    """))
                 
                 for norm, orig in self.quality_report['variable_mapping'].items():
                     conn.execute(text("""

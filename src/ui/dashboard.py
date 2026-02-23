@@ -56,6 +56,9 @@ def init_engine():
 
 config, db, preprocessor, selector, modeler = init_engine()
 
+if getattr(config, "USE_SQLITE", False):
+    st.sidebar.info("📁 Modo SQLite local (sin PostgreSQL)")
+
 # --- Sidebar ---
 st.sidebar.title("🛠️ Configuración")
 file_path = st.sidebar.text_input("Ruta Excel/CSV de Datos", "filtered_consolidated_data_cleaned.xlsx")

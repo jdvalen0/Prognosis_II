@@ -1,17 +1,41 @@
+# Entornos
 .venv/
 env/
 venv_new/
 __pycache__/
 *.pyc
 .env
+
+# Datos y artefactos
 *.db
+*.xlsx
+*.pkl
+*.csv
 results/
-tests/unit/__pycache__/
-src/models/__pycache__/
-src/data/__pycache__/
-src/features/__pycache__/
-src/ui/__pycache__/
 Data_Transformada.csv
 filtered_consolidated_data_cleaned.xlsx
+
+# Documentación/research (local)
+*.pdf
+*.ipynb
+*research*.txt
+*theoretical*.md
+*dashboard_manual*
+teoria_*.txt
+README_local.md
+
+# Carpetas/archivos que no son parte del programa
+Desktop/
+=*
+PrognosisII082025
+*clave*
+comands_sql.txt
+
+# Scripts auxiliares (no core)
+gen_ima_flujos.py
+validate_code.py
+test_pipeline_completo.py
+
+# Sistema
 .DS_Store
 .~lock.*
